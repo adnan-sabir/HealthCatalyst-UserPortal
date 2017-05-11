@@ -160,12 +160,12 @@
     <Content Include="Scripts\FileAPI.js" />
     <Content Include="Scripts\FileAPI.min.js" />
     <Content Include="Scripts\Index\angular-controller.js" />
-    <Content Include="Scripts\Index\angular-directive.js" />
     <Content Include="Scripts\Index\angular-module.js" />
     <Content Include="Scripts\Index\angular-service.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />

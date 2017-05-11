@@ -3,19 +3,10 @@
     ViewBag.Title = "User Portal";
 }
 
-@section scripts {
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    @*<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>*@
-    <!--Angular Autocomplete-->
-    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/angucomplete-alt/2.5.0/angucomplete-alt.min.js"></script>*@
-    <script src="~/Scripts/Index/angular-module.js"></script>
-    <script src="~/Scripts/Index/angular-controller.js"></script>
-    <script src="~/Scripts/Index/angular-service.js"></script>
-    <script src="~/Scripts/Index/angular-directive.js"></script>
+@section scripts {    
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/app-angular")
 }
-@*@section styles {
-    <link rel="stylesheet" href="~/Content/angucomplete-alt/angucomplete-alt.css">
-}*@
 
 <style>
     .thumb {
@@ -31,35 +22,11 @@
     .btn-primary{
     margin-right: 30px;
     }
-    /*.container{
-      margin: 20px 0;
-    }*/
-    /* AngularJS validation */
-    /*.angularform input.ng-invalid:not(.ng-pristine) {
-        box-shadow: 0px 0px 13px rgba(255, 133, 0, 0.9);
-    }
-
-    .error-message {
-        padding: 12px;
-        color: #c00000;
-        background-color: rgba(255, 133, 0, 0.1);
-        font-weight: bold;
-        border-radius: 0px 0px 14px 14px;
-    }*/
-    /* app styling */
     form {
-        /*padding: 0px 12px 12px 12px;*/
         background-color: #f5f5f5;
         border: 1px solid #cccccc;
         border-radius: 4px;
     }
-    /*
-    form .wj-control, .form-control, .btn {
-        margin-top: 12px;
-    }
-    form .wj-control {
-        width: 100%;
-    }*/
 </style>
 
 <h2>User Portal</h2>
@@ -80,7 +47,7 @@
                                         <th>Address</th>
                                         <th>Age</th>
                                         <th>Interests</th>
-                                        <th>Profile</th>
+                                        <th>Picture</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -101,7 +68,6 @@
                                             {{user.Interests}}
                                         </td>
                                         <td>
-                                            @*<img src="{{user.PictureFile}}" class="thumb">*@
                                             <img ng-src="{{user.PictureFile}}" class="thumb">
                                         </td>
                                     </tr>
@@ -135,7 +101,6 @@
                 </div>
             </div>
     </div>
-    @*</div>*@
 
     <hr />
 
@@ -148,7 +113,7 @@
                             <td>
                                 @Html.Label("Search User:", new { @class = "col-md-2 control-label" })
                                 <input class="form-control" type="text" id="userAutoSearch" placeholder="Search..." ng-change="userSearch()"
-                                           ng-model="searchVal" /> @*ng-Trim="false"*@                                
+                                           ng-model="searchVal" />
                             </td>
                         </tr>
                     </table>
@@ -160,7 +125,7 @@
                                 <th>Address</th>
                                 <th>Age</th>
                                 <th>Interests</th>
-                                <th>Profile</th>
+                                <th>Picture</th>
                             </tr>
                         </thead>
                         <tbody>

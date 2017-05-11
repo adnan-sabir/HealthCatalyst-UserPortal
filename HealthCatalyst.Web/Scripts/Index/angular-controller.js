@@ -11,12 +11,13 @@ app.controller('userCtrl', function ($scope, $http, UserService, Upload) {
     //Get all Users....
     UserService.GetAllUsers().then(function (response) {
         //debugger;
-        if (response.data != null && response.status == 200 && response.statusText == "OK") { //Success && Response contains data
-            $scope.userData = response.data;
+        if (response.data.d != null && response.data.StatusCode == 200 && response.data.StatusText == "OK") { //Success && Response contains data
+            $scope.userData = response.data.d;
         } else {            
-            alert(response.statusText); //Success && Response contains NO data
+            alert(response.data.StatusText); 
         }
-    }, function (response) {    // Error
+    }, function (response) {    // Error or response contains NO data
+        //debugger;
         alert(response.statusText);
     });
 
@@ -33,7 +34,7 @@ app.controller('userCtrl', function ($scope, $http, UserService, Upload) {
                 //console.log('');
             }).success(function (data, status, headers, config) {
                 //debugger;
-                if (data.d != null && status == 201 && data.statusText == "Created") { //Success && Response contains data
+                if (data.d != null && data.StatusCode == 201 && data.StatusText == "Created") { //Success && Response contains data
                     $scope.userData = data.d;
                     $scope.clear();
                 } else {
@@ -48,35 +49,6 @@ app.controller('userCtrl', function ($scope, $http, UserService, Upload) {
             alert('Please Enter First Name, Last Name and Age !!');
         }
     }
-
-    /*
-    $scope.addUser = function () {
-        if ($scope.User.FirstName != '' && $scope.User.LastName != '' && $scope.User.Age != '') {
-            $http({
-                method: 'POST',
-                url: app_uri + '/Add',
-                data: $scope.User
-            }).then(function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
-                if (response.data != null && response.status == 201 && response.statusText == "Created") { //Success && Response contains data
-                    $scope.userData = response.data;
-                    $scope.clear();
-                } else {
-                    alert(response.statusText); //Success && Response contains NO data
-                }
-            }, function errorCallback(response) {
-                //debugger;
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                alert(response.statusText);
-            });
-        }
-        else {
-            alert('Please Enter First Name, Last Name and Age !!');
-        }
-    };
-    */
 
     //Clear 'Add User' Textboxes....
     $scope.clear = function () {
@@ -106,13 +78,12 @@ app.controller('userCtrl', function ($scope, $http, UserService, Upload) {
                 //debugger;
                 // this callback will be called asynchronously
                 // when the response is available
-                if (response.data != null && response.status == 200 && response.statusText == "OK") { //Success && Response contains data
-                    $scope.searchedUserData = response.data;
+                if (response.data.d != null && response.data.StatusCode == 200 && response.data.StatusText == "OK") { //Success && Response contains data
+                    $scope.searchedUserData = response.data.d;
                 } else {
-                    alert(response.statusText); //Success && Response contains NO data
+                    alert(response.data.StatusText); //Success && Response contains NO data
                 }
                 userSearchbox.removeClass('ui-autocomplete-loading');
-                //$scope.searchVal = '';
             }, function errorCallback(response) {
                 userSearchbox.removeClass('ui-autocomplete-loading');
                 $scope.searchVal = '';

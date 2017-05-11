@@ -9,6 +9,7 @@ using System.Reflection;
 using HealthCatalyst.Service.UserService;
 using HealthCatalyst.DataAccess.Repository;
 using HealthCatalyst.Domain.Data;
+using HealthCatalyst.DataAccess;
 
 namespace HealthCatalyst.Web.App_Start
 {
@@ -19,13 +20,15 @@ namespace HealthCatalyst.Web.App_Start
             var builder = new ContainerBuilder();
 
             // Register API controllers using assembly scanning.
-            //builder.RegisterControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
 
             // Register Service layer this way if only few Service classes.
             builder.RegisterType<UserService>().As<IService<User>>()
                     .InstancePerRequest();
             // Register DataAccess layer this way if only few DAO classes.
             builder.RegisterType<Repository<User>>().As<IRepository<User>>()
+                    .InstancePerRequest();
+            builder.RegisterType<UserContext>().As<IContext>()
                     .InstancePerRequest();
 
             // Register Service layer this way if has many Service classes with same ending.

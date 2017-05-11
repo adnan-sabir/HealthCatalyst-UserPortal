@@ -22,6 +22,16 @@ namespace HealthCatalyst.Web
             bundles.Add(new ScriptBundle("~/bundles/upload").Include(
                         "~/Scripts/ng-*"));
 
+            //Application Angular files
+            bundles.Add(new ScriptBundle("~/bundles/app-angular").Include(
+                        "~/Scripts/Index/angular-module.js",
+                        "~/Scripts/Index/angular-controller.js",
+                        "~/Scripts/Index/angular-service.js"));
+
+            //jQuery UI
+            bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
+                        "~/Scripts/jquery-ui-1.12.1.min.js"));            
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(

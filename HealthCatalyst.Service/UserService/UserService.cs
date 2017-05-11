@@ -11,8 +11,7 @@ namespace HealthCatalyst.Service.UserService
     public interface IService<T>
     {
         IEnumerable<T> GetAll();
-        void Add(T entity);
-        void Delete(T entity);
+        void Add(T entity);        
     }
 
     public class UserService : IService<User>
@@ -24,11 +23,6 @@ namespace HealthCatalyst.Service.UserService
             this.userRepository = userRepository;
         }
 
-        public UserService()
-        {
-            this.userRepository = new Repository<User>(new UserContext());
-        }
-
         public IEnumerable<User> GetAll()
         {
             return userRepository.GetAll();
@@ -37,11 +31,6 @@ namespace HealthCatalyst.Service.UserService
         public void Add(User user)
         {
             userRepository.Add(user);
-        }
-
-        public void Delete(User user)
-        {
-            userRepository.Delete(user);
         }
     }
 }

@@ -10,7 +10,14 @@ using System.Web;
 
 namespace HealthCatalyst.DataAccess
 {
-    public class UserContext : DbContext
+    public interface IContext
+    {
+        DbSet<User> Users { get; set; }
+        DbSet<T> Set<T>() where T : class;
+        int SaveChanges();
+    }
+
+    public class UserContext : DbContext, IContext
     {
         public UserContext()
             : base("name=UserContext")

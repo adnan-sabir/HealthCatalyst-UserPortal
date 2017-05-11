@@ -18,16 +18,10 @@ namespace HealthCatalyst.Web.Controllers
     public class HomeController : Controller
     {
         private IService<User> _userService;
-        //private IRepository<User> _userRepository = new Repository();
 
         public HomeController(IService<User> userService)
         {
             this._userService = userService;
-        }
-
-        public HomeController()
-        {
-            this._userService = new UserService();
         }
 
         [Route("Index")]
@@ -43,11 +37,10 @@ namespace HealthCatalyst.Web.Controllers
             try
             {
                 var results = GetUserList();
-                if (results != null)
+                if (results.Count() > 0)
                 {
                     //returns status code 200
-                    Response.StatusCode = (int)HttpStatusCode.OK;
-                    return Json(results, JsonRequestBehavior.AllowGet);
+                    return Json(new { d = results, StatusCode = (int)HttpStatusCode.OK, StatusText = "OK" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -85,19 +78,9 @@ namespace HealthCatalyst.Web.Controllers
                 Thread.Sleep(2000);
                 var users = GetUserList();
                 var filteredUsers = String.IsNullOrEmpty(searchText) ? users :
-                     users.Where(u => u.FirstName.ToLower().Contains(searchText) || u.LastName.ToLower().Contains(searchText)).ToList();
+                     users.Where(u => u.FirstName.ToLower().Contains(searchText.ToLower()) || u.LastName.ToLower().Contains(searchText.ToLower())).ToList();
 
-                if (filteredUsers != null)
-                {
-                    //returns status code 200
-                    Response.StatusCode = (int)HttpStatusCode.OK;
-                    return Json(filteredUsers, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    //returns status code 404
-                    return new HttpStatusCodeResult(HttpStatusCode.NotFound, "User not found with search text: " + searchText);
-                }
+                return Json(new { d = filteredUsers, StatusCode = (int)HttpStatusCode.OK, StatusText = "OK" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -113,19 +96,8 @@ namespace HealthCatalyst.Web.Controllers
             try
             {
                 if (ModelState.IsValid)
-                {                  
-                    //Upload file.......................
-                    HttpPostedFileBase file = Request.Files[0];
-                    var fileName = Request.Files[0].FileName; 
-                    var ext = Path.GetExtension(fileName); 
-                    string name = Path.GetFileNameWithoutExtension(Request.Files[0].FileName); 
-                    string myfile = name + "_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ext;
-                    //Save file
-                    string targetFolder = Server.MapPath("~/Content/Uploads");
-                    string targetPath = Path.Combine(targetFolder, myfile);
-                    file.SaveAs(targetPath);
-                    
-                    user.PictureFile = myfile;
+                {
+                    user.PictureFile = UploadPostedFile(Request.Files[0]);
 
                     //Map ViewModel to domain model
                     Mapper.Initialize(m => {
@@ -138,8 +110,7 @@ namespace HealthCatalyst.Web.Controllers
                     var results = GetUserList().ToList();
 
                     //returns status code 201
-                    Response.StatusCode = (int)HttpStatusCode.Created;
-                    return Json( new { d = results, statusText = "Created" });
+                    return Json(new { d = results, StatusCode = (int)HttpStatusCode.Created, StatusText = "Created" });
                 }
                 else
                 {
@@ -149,10 +120,32 @@ namespace HealthCatalyst.Web.Controllers
             }
             catch (Exception ex)
             {
-                //returns status code 400
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Error occured while adding new user: " + ex);
-                //return Json(new { Success = false, Message = ex.Message });
+                //returns status code 500
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error occured while adding new user: " + ex);
             }
+        }
+
+        public bool Skip;
+
+        [NonAction]
+        public string UploadPostedFile(HttpPostedFileBase PostedFile)
+        {
+            //Upload file.......................
+            HttpPostedFileBase file = PostedFile;
+            var fileName = PostedFile.FileName;
+            var ext = Path.GetExtension(fileName);
+            string name = Path.GetFileNameWithoutExtension(PostedFile.FileName);
+            string myfile = name + "_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ext;
+            
+            if (!Skip)
+            {
+                //Save file
+                string targetFolder = Server.MapPath("~/Content/Uploads");
+                string targetPath = Path.Combine(targetFolder, myfile);
+                file.SaveAs(targetPath);
+            }
+
+            return myfile;
         }
 
     }
