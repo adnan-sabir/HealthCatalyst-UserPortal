@@ -10,21 +10,18 @@ app.controller('userCtrl', function ($scope, $http, UserService, Upload) {
 
     //Get all Users....
     UserService.GetAllUsers().then(function (response) {
-        //debugger;
         if (response.data.d != null && response.data.StatusCode == 200 && response.data.StatusText == "OK") { //Success && Response contains data
             $scope.userData = response.data.d;
         } else {            
             alert(response.data.StatusText); 
         }
     }, function (response) {    // Error or response contains NO data
-        //debugger;
         alert(response.statusText);
     });
 
     //Add New User....
     $scope.uploadPic = function (file) {
         if ($scope.User.FirstName != '' && $scope.User.LastName != '' && $scope.User.Age != '') {
-            //debugger;
             file.upload = Upload.upload({
                 url: app_uri + '/Add',
                 data: { user: $scope.User },
@@ -33,7 +30,6 @@ app.controller('userCtrl', function ($scope, $http, UserService, Upload) {
             .progress(function (evt) {
                 //console.log('');
             }).success(function (data, status, headers, config) {
-                //debugger;
                 if (data.d != null && data.StatusCode == 201 && data.StatusText == "Created") { //Success && Response contains data
                     $scope.userData = data.d;
                     $scope.clear();
@@ -41,7 +37,6 @@ app.controller('userCtrl', function ($scope, $http, UserService, Upload) {
                     alert('Missing/incorrect User data!'); //Success && Response contains NO data
                 }
             }).error(function (err) {
-                //debugger;
                 alert('Error occured while adding new user');
             });
         }
@@ -64,18 +59,15 @@ app.controller('userCtrl', function ($scope, $http, UserService, Upload) {
     $scope.searchedUserData = null;
     //event fires when click on textbox
     $scope.userSearch = function () {
-        //debugger;
         var inputMin = 1;
         if ($scope.searchVal.length >= inputMin) {
             var userSearchbox = angular.element(document.querySelector('#userAutoSearch'));
             userSearchbox.addClass('ui-autocomplete-loading');
-            //debugger;
             $http({
                 method: 'GET',
                 url: app_uri + '/Search?searchText=' + $scope.searchVal
                 //data: $scope.User
             }).then(function successCallback(response) {
-                //debugger;
                 // this callback will be called asynchronously
                 // when the response is available
                 if (response.data.d != null && response.data.StatusCode == 200 && response.data.StatusText == "OK") { //Success && Response contains data
@@ -87,7 +79,6 @@ app.controller('userCtrl', function ($scope, $http, UserService, Upload) {
             }, function errorCallback(response) {
                 userSearchbox.removeClass('ui-autocomplete-loading');
                 $scope.searchVal = '';
-                //debugger;
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 alert(response.statusText);
